@@ -28,7 +28,6 @@ jobs:
         distribution : 'temurin'
        
     - name: Build java app
-      run: |
-        cd src/app/
-        java HTMLControllerTests
+      run: 
+        java /src/app/HTMLControllerTests
     
