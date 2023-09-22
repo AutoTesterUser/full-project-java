@@ -16,4 +16,11 @@
 			<class name="test.java.main.GoogleTests" />
 		</classes>
 	</test>
+	<test name="GoogleLala" enabled="false">
+		<parameter name="browserName" value="chrome" />
+		<classes>
+			<class name="test.java.main.GoogleTests" />
+			<class name="test.java.main.PruebaTests" />
+		</classes>
+	</test>
 </suite>
