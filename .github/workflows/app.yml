@@ -29,5 +29,5 @@ jobs:
        
     - name: Build java app
       run: 
-        java /src/app/HTMLControllerTests
+        java /src/app/HTMLControllerTests.java
     
