@@ -1,0 +1,15 @@
+<configuration>
+    <!-- Configuración de los appenders -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/application.log</file>
+        <append>true</append>
+        <encoder>
+            <pattern>%d [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    <!-- Root logger sin la salida a la consola -->
+    <root level="info">
+        <appender-ref ref="FILE" />
+    </root>
+</configuration>
