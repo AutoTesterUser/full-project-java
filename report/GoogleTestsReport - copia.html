@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <title>Selecciona las pruebas a ejecutar</title>
+    <style>
+        body {
+            font-family: "Arial Rounded MT Bold", sans-serif;
+            background-color: #fff;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #0A2490;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .save-button {
+            background-color: #0A2490;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .funcionalidad {
+            margin: 10px 0;
+        }
+
+        .funcionalidad label {
+            font-weight: bold;
+        }
+
+        .pruebas {
+            margin-top: 5px;
+            margin-left: 20px;
+            display: none;
+        }
+
+        .pruebas label {
+            display: block;
+        }
+
+        .pruebas.active {
+            display: block;
+        }
+
+        .prueba {
+            margin-bottom: 10px;
+        }
+
+        .toggle-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-family: "Arial Rounded MT Bold", sans-serif;
+            font-size: 18px;
+            margin-left: 5px;
+            padding: 0;
+            float: right;
+        }
+
+        .Nodo {
+            border-radius: 5px;
+            padding: 15px;
+            border: 1px solid #E6E3E3;
+            width: 500px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Selecciona las pruebas a ejecutar</h1>
+    <button class="save-button" onclick="guardarCambios()">Guardar Cambios</button>
+</div>
+
+<!-- Funcionalidad 1 -->
+<div class="funcionalidad">
+    <div class="Nodo">
+        <label>
+            <input type="checkbox" id="funcionalidad1" onchange="sincronizarPruebas('pruebasFuncionalidad1', this)"> Funcionalidad 1
+        </label>
+        <button class="toggle-button" onclick="togglePruebas('pruebasFuncionalidad1')" ><img src="https://cdn-icons-png.flaticon.com/128/318/318225.png" data-src="https://cdn-icons-png.flaticon.com/128/318/318225.png" alt="flecha hacia abajo " title="flecha hacia abajo " width="20" height="20" class="lzy lazyload--done" srcset="https://cdn-icons-png.flaticon.com/128/318/318225.png 4x"></button>
+    </div>
+    <div class="pruebas" id="pruebasFuncionalidad1">
+        <label class="prueba"><input type="checkbox"> Prueba 1</label>
+        <label class="prueba"><input type="checkbox"> Prueba 2</label>
+        <label class="prueba"><input type="checkbox"> Prueba 3</label>
+    </div>
+</div>
+
+<!-- Funcionalidad 2 -->
+<div class="funcionalidad">
+    <div class="Nodo">
+        <label>
+            <input type="checkbox" id="funcionalidad2" onchange="sincronizarPruebas('pruebasFuncionalidad2', this)"> Funcionalidad 2
+        </label>
+        <button class="toggle-button" onclick="togglePruebas('pruebasFuncionalidad2')" ><img src="https://cdn-icons-png.flaticon.com/128/318/318225.png" data-src="https://cdn-icons-png.flaticon.com/128/318/318225.png" alt="flecha hacia abajo " title="flecha hacia abajo " width="20" height="20" class="lzy lazyload--done" srcset="https://cdn-icons-png.flaticon.com/128/318/318225.png 4x"></button>
+    </div>
+    <div class="pruebas" id="pruebasFuncionalidad2">
+        <label class="prueba"><input type="checkbox"> Prueba 1</label>
+        <label class="prueba"><input type="checkbox"> Prueba 2</label>
+        <label class="prueba"><input type="checkbox"> Prueba 3</label>
+    </div>
+</div>
+
+<script>
+    // Función para mostrar u ocultar pruebas
+    function togglePruebas(funcionalidadId) {
+        var pruebasDiv = document.getElementById(funcionalidadId);
+        pruebasDiv.classList.toggle("active");
+    }
+
+    // Función para sincronizar los estados de los checkboxes de pruebas
+    function sincronizarPruebas(pruebasId, checkbox) {
+        var pruebasDiv = document.getElementById(pruebasId);
+        var checkboxes = pruebasDiv.querySelectorAll("input[type='checkbox']");
+        checkboxes.forEach(function (pruebaCheckbox) {
+            pruebaCheckbox.checked = checkbox.checked;
+        });
+    }
+
+    // Función para guardar cambios (puedes personalizar esta función)
+    function guardarCambios() {
+        alert("Cambios guardados");
+    }
+</script>
+</body>
+</html>
+

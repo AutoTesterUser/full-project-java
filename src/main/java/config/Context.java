@@ -22,5 +22,10 @@ public @interface Context {
 	/**
 	 * Método del cual depende el actual.
 	 */
+	
+	String step() default "";
+	/*
+	  Descripción o nombre del paso que se ejecutará.
+	 */
 
 }

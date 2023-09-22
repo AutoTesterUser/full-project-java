@@ -1,11 +1,5 @@
 package main.java.config;
 
-import java.io.File;
-import java.io.IOException;
-
-import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
 import org.testng.IAnnotationTransformer;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
@@ -13,37 +7,17 @@ import org.testng.ITestResult;
 
 import test.java.BaseTest;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 public class SuiteListener extends BaseTest implements ITestListener, IAnnotationTransformer{
 	@Override
 	public void onTestStart(ITestResult result) {
 		ITestListener.super.onTestStart(result);
-	}
-
-	@Override
-	public void onTestSuccess(ITestResult result) {
-		String fileName = System.getProperty("user.dir") + File.separator + "screenshots" + File.separator + "passed"
-				+ File.separator + result.getMethod().getMethodName();
-		File f = ((TakesScreenshot) BaseTest.driver).getScreenshotAs(OutputType.FILE);
-
-		try {
-			FileUtils.copyFile(f, new File(fileName + ".png"));
-		} catch (IOException e) {
-			e.getMessage();
-		}
-	}
-
-	@Override
-	public void onTestSkipped(ITestResult result) {
-		ITestListener.super.onTestSkipped(result);
-		String fileName = System.getProperty("user.dir") + File.separator + "screenshots" + File.separator + "skipped"
-				+ File.separator + result.getMethod().getMethodName();
-		File f = ((TakesScreenshot) BaseTest.driver).getScreenshotAs(OutputType.FILE);
-
-		try {
-			FileUtils.copyFile(f, new File(fileName + ".png"));
-		} catch (IOException e) {
-			e.getMessage();
-		}
+		Utils.reemplazarLog();
+		Utils.reemplazarReportes();
 	}
 
 	@Override
@@ -64,5 +38,19 @@ public class SuiteListener extends BaseTest implements ITestListener, IAnnotatio
 	@Override
 	public void onFinish(ITestContext context) {
 		ITestListener.super.onFinish(context);
+
+		String fullName = context.getAllTestMethods()[0].getTestClass().getName();
+		String simpleName = fullName.substring(fullName.lastIndexOf('.') + 1);
+		String filePath = "report" + File.separator + simpleName + "Report.html";
+
+		File originalFile = new File(spark.getFile().getAbsolutePath());
+		File newFile = new File(filePath);
+
+		try {
+			Files.copy(originalFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+			originalFile.deleteOnExit();
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

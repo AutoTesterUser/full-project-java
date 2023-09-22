@@ -1,16 +1,21 @@
 package test.java;
 
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.concurrent.TimeUnit;
 
+import com.aventstack.extentreports.MediaEntityBuilder;
+import com.aventstack.extentreports.Status;
+import com.aventstack.extentreports.markuputils.ExtentColor;
+import com.aventstack.extentreports.markuputils.MarkupHelper;
+import com.aventstack.extentreports.reporter.configuration.ViewConfigurer;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterTest;
@@ -20,10 +25,6 @@ import org.testng.annotations.Parameters;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
-import com.aventstack.extentreports.Status;
-import com.aventstack.extentreports.markuputils.ExtentColor;
-import com.aventstack.extentreports.markuputils.MarkupHelper;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
@@ -37,14 +38,25 @@ public class BaseTest {
 	public static ExtentReports extent;
 	public static ExtentSparkReporter spark;
 	public static ExtentTest test;
-	public static String extentDate;
-	public static ExtentTest step;
-	
 	
 	@BeforeTest(description = "Se configura el controlador y el navegador")
+	public void beforeTestMethod() {
+		extent = new ExtentReports();
+		spark = new ExtentSparkReporter("report" + File.separator + "Provisorio" + "Report.html");
+		spark.config().setDocumentTitle("Reporte de automatización de pruebas");
+		spark.config().setEncoding("UTF-8");
+		spark.config().setReportName("Resultado Pruebas Automatizadas");
+		extent.attachReporter(spark);
+		extent.setSystemInfo("Proyecto", "Google Search Project");
+		extent.setSystemInfo("Automatizador", "Automate Tester");
+		extent.setSystemInfo("Sistema Operativo", System.getProperty("os.name"));
+	}
+	
+	@BeforeMethod(description = "Se configura el reporte de pruebas")
 	@Parameters(value = { "browserName" })
-	public void beforeTestMethod(String browserName) {
+	public void beforeMethod(String browserName, Method testMethod, ITestResult result) {
 
+		test = extent.createTest(Utils.convertToPascalCase(testMethod.getName()));
 		setUpDriver(browserName);
 		driver.manage().window().maximize();
 		driver.get(Constants.url);
@@ -52,44 +64,33 @@ public class BaseTest {
 		driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 	}
 	
-	@BeforeMethod(description = "Se configura el reporte de pruebas")
-	public void beforeMethod(Method testMethod, ITestResult result) {
-		String className = result.getTestClass().getRealClass().getSimpleName();
-        extent = new ExtentReports();
-		spark = new ExtentSparkReporter("report" + File.separator + className + "Report.html");
-		spark.config().enableOfflineMode(true);
-		spark.config().setDocumentTitle("Reporte de automatización de pruebas");
-		spark.config().setEncoding("UTF-8");
-		spark.config().setReportName("Resultado Pruebas Automatizadas");
-		spark.config().setTimelineEnabled(true);
-		extent.attachReporter(spark);
-		extent.setSystemInfo("Proyecto", "Google Search Project");
-		extent.setSystemInfo("Automatizador", "Automate Tester");
-		extent.setSystemInfo("os", System.getProperty("os.name"));
-		test = extent.createTest(Utils.convertToPascalCase(testMethod.getName()));
-	}
-	
 	@AfterMethod
-	public void afterMethod(ITestResult result) throws IOException {
-		String methodName = result.getMethod().getMethodName();
-		String passedPath = System.getProperty("user.dir") + File.separator + "screenshots"
-				+ File.separator + "passed" + File.separator + methodName + ".png";
-		String skkipedPath = System.getProperty("user.dir") + File.separator + "screenshots"
-				+ File.separator + "skkiped" + File.separator + methodName + ".png";
+	public void afterMethod(ITestResult result) {
+		String testName = result.getName();
+		String evidencia;
 
-		if (result.getStatus() == ITestResult.SUCCESS) {
-			step.log(Status.PASS, MarkupHelper.createLabel("PRUEBA SUPERADA: '" + methodName, ExtentColor.GREEN));
-			step.pass(MediaEntityBuilder.createScreenCaptureFromPath(passedPath).build());
+		if (result.getStatus() == ITestResult.SUCCESS){
+			test.log(Status.PASS, MarkupHelper.createLabel("Prueba exitosa: " + testName, ExtentColor.GREEN));
+			evidencia = Utils.takeScreenshot(testName, "passed");
+			test.pass("Clic para visualizar evidencia", MediaEntityBuilder.createScreenCaptureFromBase64String(evidencia).build());
+			System.out.println("Prueba exitosa: " + testName);
 		} else if (result.getStatus() == ITestResult.SKIP) {
-			step.log(Status.SKIP, MarkupHelper.createLabel("PRUEBA INCOMPLETA: '" + methodName, ExtentColor.AMBER));
-			step.skip(MediaEntityBuilder.createScreenCaptureFromPath(skkipedPath).build());
+			test.log(Status.SKIP, MarkupHelper.createLabel("Prueba incompleta: " + testName, ExtentColor.AMBER));
+			evidencia = Utils.takeScreenshot(testName, "skkiped");
+			test.pass("Clic para visualizar evidencia", MediaEntityBuilder.createScreenCaptureFromBase64String(evidencia).build());
+			System.out.println("Prueba incompleta: " + testName);
+
+			test.assignAuthor("ddd");
+		} else if (result.getStatus() == ITestResult.FAILURE) {
+			Utils.errorLOG(result);
 		}
 		driver.quit();
 	}
 	
 	@AfterTest
     public void afterTest() {
-       
+		extent.setSystemInfo("Navegador", ((RemoteWebDriver) driver).getCapabilities().getBrowserName());
+		extent.setSystemInfo("Version", ((RemoteWebDriver) driver).getCapabilities().getVersion());
 		extent.flush();
     }
 	
@@ -100,9 +101,9 @@ public class BaseTest {
 			
 			WebDriverManager.chromedriver().setup();
 			ChromeOptions options = new ChromeOptions();
-			options.setHeadless(false);
+			options.setHeadless(true);
 			driver = new ChromeDriver(options);
-			driver.manage().window().setSize(new Dimension(1600, 900));
+			driver.manage().window().setSize(new Dimension(1920, 1080));
 			
 		} else if (browserName.contains("edge")) {
 			

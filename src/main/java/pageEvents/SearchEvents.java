@@ -11,6 +11,7 @@ public class SearchEvents implements SearchElements{
 	public static void sendText(String text) {
 		try {
 			Events.sendKeys(inputSearch, text);
+			
 		} catch (Exception e) {
 			Utils.eventFailed(e.getMessage());
 		}

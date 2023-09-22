@@ -9,10 +9,17 @@
 <table>
 <tr><th>Test</th><th># Passed</th><th># Skipped</th><th># Retried</th><th># Failed</th><th>Time (ms)</th><th>Included Groups</th><th>Excluded Groups</th></tr>
 <tr><th colspan="8">Sample Test Suite</th></tr>
-<tr><td><a href="#t0">[Nombre Proyecto]</a></td><td class="num">1</td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num">5.348</td><td></td><td></td></tr>
+<tr><td><a href="#t0">[Nombre Proyecto]</a></td><td class="num">0</td><td class="num">0</td><td class="num">0</td><td class="num attn">1</td><td class="num">59.149</td><td></td><td></td></tr>
 </table>
-<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Sample Test Suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">[Nombre Proyecto] &#8212; passed</th></tr><tr class="passedeven"><td rowspan="1">test.java.main.GoogleTests</td><td><a href="#m0">obtenerSegundoResultado</a></td><td rowspan="1">1693368374383</td><td rowspan="1">345</td></tr></tbody>
+<table id='summary'><thead><tr><th>Class</th><th>Method</th><th>Start</th><th>Time (ms)</th></tr></thead><tbody><tr><th colspan="4">Sample Test Suite</th></tr></tbody><tbody id="t0"><tr><th colspan="4">[Nombre Proyecto] &#8212; failed</th></tr><tr class="failedeven"><td rowspan="1">test.java.main.GoogleTests</td><td><a href="#m0">obtenerSegundoResultado</a></td><td rowspan="1">1693427343427</td><td rowspan="1">52983</td></tr></tbody>
 </table>
-<h2>[Nombre Proyecto]</h2><h3 id="m0">test.java.main.GoogleTests#obtenerSegundoResultado</h3><table class="result"><tr><th class="invisible"/></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
+<h2>[Nombre Proyecto]</h2><h3 id="m0">test.java.main.GoogleTests#obtenerSegundoResultado</h3><table class="result"><tr><th>Exception</th></tr><tr><td><div class="stacktrace">java.lang.AssertionError: null
+	at main.java.config.Utils.eventFailed(Utils.java:109)
+	at main.java.utils.Events.getElementList(Events.java:122)
+	at main.java.pageEvents.ResultsEvents.resultVerify(ResultsEvents.java:24)
+	at main.java.pageSteps.ResultsSteps.getResult(ResultsSteps.java:12)
+	at test.java.main.GoogleTests.obtenerSegundoResultado(GoogleTests.java:18)
+	at java.base/java.util.ArrayList.forEach(ArrayList.java:1511)
+... Removed 29 stack frames</div></td></tr></table><p class="totop"><a href="#summary">back to summary</a></p>
 </body>
 </html>
