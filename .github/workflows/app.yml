@@ -30,6 +30,5 @@ jobs:
     - name: Build java app
       run: |
         cd src/app/
-        javac HTMLControllerTests.java
         java HTMLControllerTests
     
