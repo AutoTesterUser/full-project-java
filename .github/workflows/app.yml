@@ -30,6 +30,6 @@ jobs:
     - name: Build java app
       run: |
         cd src/app/
-        echo ls
+        ls
       
     
