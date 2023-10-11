@@ -81,6 +81,11 @@ jobs:
         mv src/app/ActionsServlet.java updated/
         ls updated/
         
+    - name: mmmm
+      run: |
+        ls
+        "Verificndo"
+        
     - name: Checkout
       uses: actions/checkout@v3
     - name: Setup Pages
@@ -88,7 +93,6 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        cache: maven
         path: updated/
     - name: Deploy to GitHub Pages
       id: deployment
