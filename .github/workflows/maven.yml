@@ -38,13 +38,22 @@ jobs:
         npm install
         npm i -D @playwright/test
         npx playwright install 
-    - name: Run tests
+    - uses: actions/checkout@v3
+    - name: Set up JDK 11
+      uses: actions/setup-java@v3
+      with:
+        java-version: '11'
+        distribution: 'temurin'
+        cache: maven
+        
+    - name: Build with Maven
+      run: mvn -B package --file pom.xml  
       continue-on-error: true
-      run: |  
-        PLAYWRIGHT_JUNIT_OUTPUT_NAME=xray-report.xml npx playwright test
+      
     - name: Output results file
       run: |
-        cat xray-report.xml
+        latest_report=$(ls -t report/*.html | head -n 1)
+        cat $latest_report > AutomationReport.html
     - name: "Import results to Xray"
       uses: mikepenz/xray-action@v2.3.0
       with:
@@ -53,7 +62,7 @@ jobs:
          xrayCloud: "false"
          xrayBaseUrl: ${{ secrets.JIRA_BASEURL }}
          testFormat: "junit"
-         testPaths: "**/xray-report.xml"
+         testPaths: "AutomationReport.html"
          testExecKey: "${{ inputs.testExecKey }}"
          projectKey: "${{ inputs.projectKey }}"
          testEnvironments: "NODE_${{ matrix.node-version }}"   
