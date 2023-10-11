@@ -71,11 +71,8 @@ jobs:
         cache: maven
     - name: Build java App
       run: |
-        cd src/app/
-        javac HTMLControllerTests.java
-        ls
-        java HTMLControllerTests
-        
+        mvn compile
+        java -cp target/classes app.HTMLControllerTests        
         echo "Se ha actualizado la suite de pruebas"
 
     - name: Checkout
