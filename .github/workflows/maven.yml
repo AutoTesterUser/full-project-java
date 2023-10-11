@@ -1,4 +1,4 @@
-name: Node.js CI
+name: Run Automation Tests
 
 on:
   push:
@@ -21,7 +21,9 @@ jobs:
         cache: maven
 
     - name: Copy testng.xml
-      run: cp testng.xml actions-runner/
+      run: |
+        mkdir $GITHUB_WORKSPACE/tests
+        cp testng.xml  $GITHUB_WORKSPACE/tests/
       continue-on-error: true
         
     - name: Build with Maven
