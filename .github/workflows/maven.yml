@@ -24,6 +24,8 @@ jobs:
       run: |
         mkdir $GITHUB_WORKSPACE/tests
         cp testng.xml  $GITHUB_WORKSPACE/tests/
+        echo $GITHUB_WORKSPACE
+        echo ls $GITHUB_WORKSPACE/tests/
       continue-on-error: true
         
     - name: Build with Maven
