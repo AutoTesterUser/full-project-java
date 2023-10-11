@@ -10,7 +10,7 @@
 			<class name="test.java.main.GoogleTests"/>
 		</classes>
 	</test>
-	<test name="GoogleTranslate" enabled="false">
+	<test name="GoogleTranslate" enabled="true">
 		<parameter name="browserName" value="chrome" />
 		<classes>
 			<class name="test.java.main.GoogleTests" />
