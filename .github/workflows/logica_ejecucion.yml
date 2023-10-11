@@ -73,7 +73,9 @@ jobs:
       run: |
         cd src/app/
         javac HTMLControllerTests.java
+        ls
         java HTMLControllerTests
+        
         echo "Se ha actualizado la suite de pruebas"
 
     - name: Checkout
