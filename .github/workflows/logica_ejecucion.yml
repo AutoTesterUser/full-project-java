@@ -84,7 +84,7 @@ jobs:
     - name: mmmm
       run: |
         ls
-        "Verificndo"
+        echo "Verificndo"
         
     - name: Checkout
       uses: actions/checkout@v3
@@ -93,7 +93,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: updated/
+        path: 'updated'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2
