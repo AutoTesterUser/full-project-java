@@ -89,9 +89,7 @@ jobs:
       uses: actions/upload-pages-artifact@v2
       with:
         cache: maven
-        path: 'updated/'
+        path: updated/
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2
-      with:
-        cache: maven
