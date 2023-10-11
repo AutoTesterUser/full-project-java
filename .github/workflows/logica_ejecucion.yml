@@ -72,6 +72,7 @@ jobs:
     - name: Build java App
       run: |
         cd src/app/
+        javac HTMLControllerTests.java
         java HTMLControllerTests
         echo "Se ha actualizado la suite de pruebas"
 
