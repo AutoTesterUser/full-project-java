@@ -74,6 +74,8 @@ jobs:
         mvn compile
         mvn exec:java -Dexec.mainClass="app.HTMLControllerTests"     
         echo "Se ha actualizado la suite de pruebas"
+        mvn clean install
+        cat src/app/TestsExecution.html
 
     - name: Checkout
       uses: actions/checkout@v3
