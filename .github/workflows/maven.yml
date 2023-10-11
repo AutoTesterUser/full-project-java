@@ -24,6 +24,7 @@ jobs:
       run: |
         mkdir $GITHUB_WORKSPACE/tests
         cp testng.xml  $GITHUB_WORKSPACE/tests/
+        cp testng.dtd  $GITHUB_WORKSPACE/tests/
         echo $GITHUB_WORKSPACE
         echo ls $GITHUB_WORKSPACE/tests/
       continue-on-error: true
