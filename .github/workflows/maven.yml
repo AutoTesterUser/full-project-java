@@ -20,17 +20,15 @@ jobs:
         distribution: 'temurin'
         cache: maven
 
-    - name: Copy testng.xml
+    - name: Logica Ejecucion Pruebas
       run: |
-        mkdir $GITHUB_WORKSPACE/tests
-        cp testng.xml  $GITHUB_WORKSPACE/tests/
-        cp testng.dtd  $GITHUB_WORKSPACE/tests/
-        echo $GITHUB_WORKSPACE
-        ls $GITHUB_WORKSPACE/tests/
-      continue-on-error: true
-        
-    - name: Build with Maven
-      run: mvn test -DsuiteXmlFile=$GITHUB_WORKSPACE/tests/testng.xml
+        if [[ ${{ github.event_name }} == 'pull_request' ]]; then
+          echo "La ejecución fue a través de un pull request, ejecutando pruebas nuevas"
+          mvn -B package --file pom.xml
+        else
+          echo "La ejecución no fue por un pull request, ejecutando comando 2..."
+          mvn test -DsuiteXmlFile=$GITHUB_WORKSPACE/tests/testng.xml
+        fi
       continue-on-error: true
 
     - name: Get Report
@@ -43,3 +41,12 @@ jobs:
       with:
         name: Automation Report HTML
         path: AutomationReport.html
+
+    - name: Copy testng.xml
+      run: |
+        mkdir $GITHUB_WORKSPACE/tests
+        cp testng.xml  $GITHUB_WORKSPACE/tests/
+        cp testng.dtd  $GITHUB_WORKSPACE/tests/
+        echo $GITHUB_WORKSPACE
+        ls $GITHUB_WORKSPACE/tests/
+      continue-on-error: true
