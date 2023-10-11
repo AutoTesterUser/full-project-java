@@ -43,3 +43,6 @@ jobs:
       with:
         name: Automation Report HTML
         path: AutomationReport.html
+        
+    - name: Establecer variable de entorno
+      run: echo "SET_FLAG=true" >> $GITHUB_ENV
