@@ -25,6 +25,8 @@ jobs:
         if [[ ${{ github.event_name }} == 'push' || ${{ github.event_name }} == 'pull_request' ]]; then
           echo "La ejecución trae nuevas pruebas"
           mvn -B package --file pom.xml
+          mkdir $GITHUB_WORKSPACE/tests
+          cp testng.xml  $GITHUB_WORKSPACE/tests/
         else
           echo "La ejecución se hizo de forma manual"
           mvn test -DsuiteXmlFile=$GITHUB_WORKSPACE/tests/testng.xml
@@ -41,12 +43,3 @@ jobs:
       with:
         name: Automation Report HTML
         path: AutomationReport.html
-
-    - name: Copy testng.xml
-      run: |
-        mkdir $GITHUB_WORKSPACE/tests
-        cp testng.xml  $GITHUB_WORKSPACE/tests/
-        cp testng.dtd  $GITHUB_WORKSPACE/tests/
-        echo $GITHUB_WORKSPACE
-        ls $GITHUB_WORKSPACE/tests/
-      continue-on-error: true
