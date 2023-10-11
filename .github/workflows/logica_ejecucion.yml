@@ -76,14 +76,14 @@ jobs:
         echo "Se ha actualizado la suite de pruebas"
         cat src/app/TestsExecution.html
         latest_html=$(ls -t src/app/TestsExecution.html | head -n 1)
-        mkdir updated
-        cat $latest_html > updated/TestsExecution.html
-        mv src/app/ActionsServlet.java updated/
-        ls updated/
+        mkdir $GITHUB_WORKSPACE/updated/
+        cat $latest_html > $GITHUB_WORKSPACE/updated/TestsExecution.html
+        mv src/app/ActionsServlet.java $GITHUB_WORKSPACE/updated/
+        ls $GITHUB_WORKSPACE/updated/
         
     - name: mmmm
       run: |
-        ls
+        ls $GITHUB_WORKSPACE
         echo "Verificndo"
         
     - name: Checkout
@@ -95,7 +95,7 @@ jobs:
     - name: Upload artifact
       uses: actions/upload-pages-artifact@v2
       with:
-        path: 'updated'
+        path: '$GITHUB_WORKSPACE/updated/'
     - name: Deploy to GitHub Pages
       id: deployment
       uses: actions/deploy-pages@v2
