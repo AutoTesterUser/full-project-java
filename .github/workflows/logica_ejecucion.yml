@@ -72,7 +72,7 @@ jobs:
     - name: Build java App
       run: |
         mvn compile
-        java -cp target/classes app.HTMLControllerTests        
+        mvn exec:java -Dexec.mainClass="app.HTMLControllerTests"     
         echo "Se ha actualizado la suite de pruebas"
 
     - name: Checkout
